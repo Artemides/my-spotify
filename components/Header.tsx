@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import Button from "./Button";
+import { useAuthModal } from "@/hooks/useAuthModal";
 type HeaderProps = {
   children: React.ReactNode;
   className?: string;
@@ -14,6 +15,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const router = useRouter();
+  const { onOpen } = useAuthModal();
 
   const handleNext = () => {
     router.forward();
@@ -53,10 +55,15 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           </button>
         </div>
         <div className="flex gap-x-2 items-center">
-          <Button className="bg-transparent text-neutral-300 font-medium whitespace-nowrap">
+          <Button
+            onClick={onOpen}
+            className="bg-transparent text-neutral-300 font-medium whitespace-nowrap"
+          >
             Sign up
           </Button>
-          <Button className="bg-white">Log in</Button>
+          <Button onClick={onOpen} className="bg-white">
+            Log in
+          </Button>
         </div>
       </div>
       {children}

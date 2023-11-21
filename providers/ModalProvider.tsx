@@ -1,18 +1,10 @@
 "use client";
 
+import AuthModal from "@/components/AuthModal";
 import Modal from "@/components/Modal";
 
 const ModalProvider = () => {
-  return (
-    <Modal
-      isOpen
-      title="Authtnetication"
-      description="authenticate to start listening to your favorite tracks"
-      onChange={() => {}}
-    >
-      Form
-    </Modal>
-  );
+  return <AuthModal />;
 };
 
 export default ModalProvider;

@@ -6,10 +6,8 @@ type AuthModalStore = {
   onClose: () => void;
 };
 
-export const useAuthModal = () => {
-  const {} = create<AuthModalStore>((set) => ({
-    isOpen: false,
-    onOpen: () => set({ isOpen: true }),
-    onClose: () => set({ isOpen: false }),
-  }));
-};
+export const useAuthModal = create<AuthModalStore>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
+}));
