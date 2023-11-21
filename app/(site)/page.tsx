@@ -7,7 +7,7 @@ export default function Home() {
       <Header>
         <div className="p-4">
           <h3 className="font-semibold text-3xl my-6">Welcome Back</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:auto-cols-auto gap-y-3 gap-x-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:auto-cols-auto gap-y-3 gap-x-4 ">
             <Playlist
               href="liked"
               image={"/images/liked.png"}
