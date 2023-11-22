@@ -1,15 +1,24 @@
 import { useUploadModal } from "@/hooks/useUploadModal";
 import Modal from "./Modal";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./Input";
-import { useState } from "react";
+import { use, useState } from "react";
 import Button from "./Button";
-
+import toast from "react-hot-toast";
+import { useUser } from "@/hooks/useUser";
+import uniqid from "uniqid";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { supabase } from "@supabase/auth-ui-shared";
+import { useRouter } from "next/navigation";
+import UploadToaster from "./UploadToaster";
 const UploadModal = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const router = useRouter();
   const { isOpen, onClose } = useUploadModal();
-  const { register, handleSubmit } = useForm<FieldValues>({
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+
+  const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
       author: "",
       title: "",
@@ -20,7 +29,75 @@ const UploadModal = () => {
 
   const handleOpenModal = (open: boolean) => !open && onClose();
 
-  const handleFormSubmit = () => {};
+  const handleFormSubmit: SubmitHandler<FieldValues> = async ({
+    author,
+    title,
+    song,
+    image,
+  }) => {
+    try {
+      setIsLoading(true);
+
+      const songFile = song?.[0];
+      const imageFile = image?.[0];
+      if (!user || !songFile || !imageFile) {
+        return toast.error("Missing Fields");
+      }
+
+      const id = uniqid();
+
+      const { data: songData, error: songError } = await supabaseClient.storage
+        .from("songs")
+        .upload(`song-${title}-${id}`, songFile, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (songError) {
+        return toast.error(`Failed to upload song for ${title}`);
+      }
+
+      const { data: imageData, error: imageError } =
+        await supabaseClient.storage
+          .from("images")
+          .upload(`image-${title}-${id}`, imageFile, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+      if (imageError) {
+        return toast.error(`Error uploading image for ${title}`);
+      }
+
+      const { error } = await supabaseClient.from("songs").insert({
+        user_id: user.id,
+        title,
+        author,
+        image_path: imageData.path,
+        song_path: songData.path,
+      });
+
+      if (error) {
+        return toast.error(`Error creating song: ${error}`);
+      }
+
+      router.refresh();
+      reset();
+      toast.custom((t) => (
+        <UploadToaster
+          t={t}
+          image={URL.createObjectURL(imageFile)}
+          title={`Song ${title} Created!`}
+          path={title}
+        />
+      ));
+      onClose();
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Modal
@@ -60,15 +137,17 @@ const UploadModal = () => {
         <div>
           <span className="block mb-1 pl-1">Select an Poster</span>
           <Input
-            id="poster"
+            id="image"
             type="file"
             accept="image/*"
             disabled={isLoading}
-            {...register("poster", { required: true })}
-            placeholder="poster"
+            {...register("image", { required: true })}
+            placeholder="image"
           />
         </div>
-        <Button type="submit">Upload</Button>
+        <Button disabled={isLoading} type="submit">
+          Upload
+        </Button>
       </form>
     </Modal>
   );
