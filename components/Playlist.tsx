@@ -3,6 +3,7 @@
 import Image, { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
+import PlayButton from "./PlayButton";
 type PlaylistProps = {
   image: string;
   title: string;
@@ -15,7 +16,7 @@ const Playlist: React.FC<PlaylistProps> = ({ image, title, href }) => {
   const handlePlay = () => [router.push(href)];
 
   return (
-    <button
+    <div
       className="relative group flex items-center rounded-md overflow-hidden gap-x-4 bg-neutral-100/10 hover:bg-neutral-100/20 transition duration-300 pr-4"
       onClick={handlePlay}
     >
@@ -28,10 +29,8 @@ const Playlist: React.FC<PlaylistProps> = ({ image, title, href }) => {
         />
       </div>
       <p className="font-semibold truncate">{title}</p>
-      <div className="absolute transition opacity-0  rounded-full bg-green-500 p-4 drop-shadow-md right-5 group-hover:opacity-100 hover:scale-110 text-black">
-        <FaPlay />
-      </div>
-    </button>
+      <PlayButton className="absolute" />
+    </div>
   );
 };
 
