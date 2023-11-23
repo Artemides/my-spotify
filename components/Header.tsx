@@ -14,13 +14,19 @@ import Button from "./Button";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import toast from "react-hot-toast";
+import SearchBar from "./Searhbar";
 
 type HeaderProps = {
   children: React.ReactNode;
   className?: string;
+  withSearch?: boolean;
 };
 
-const Header: React.FC<HeaderProps> = ({ children, className }) => {
+const Header: React.FC<HeaderProps> = ({
+  children,
+  className,
+  withSearch = false,
+}) => {
   const router = useRouter();
   const { onOpen } = useAuthModal();
   const supabaseClient = useSupabaseClient();
@@ -65,7 +71,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             <RxCaretRight size={32} />
           </button>
         </div>
-        <div className="sm:hidden flex gap-x-2 ">
+
+        {withSearch && <SearchBar />}
+
+        <div className="sm:hidden flex gap-x-2 items-center">
           <button className="rounded-full bg-black/50 hover:bg-black/75 transition-all p-1">
             <HiHome size={24} />
           </button>

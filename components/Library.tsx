@@ -3,11 +3,19 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useUser } from "@/hooks/useUser";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useUploadModal } from "@/hooks/useUploadModal";
+import { getSongsByUserId } from "@/actions/getSongsByUserId";
+import { Song } from "@/types/types";
+import LibraryItem from "./LibraryItem";
 
-const Library = () => {
+type LibraryProps = {
+  songs: Song[];
+};
+
+const Library = ({ songs }: LibraryProps) => {
   const authModal = useAuthModal();
   const { user } = useUser();
   const uploadModal = useUploadModal();
+
   const handleAddPlaylist = () => {
     if (!user) return authModal.onOpen();
 
@@ -27,7 +35,11 @@ const Library = () => {
           />
         </button>
       </div>
-      <div className="h-full">Songs</div>
+      <div className="h-full">
+        {songs.map((song) => (
+          <LibraryItem key={song.id} song={song} onClick={() => {}} />
+        ))}
+      </div>
     </section>
   );
 };

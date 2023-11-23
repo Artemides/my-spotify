@@ -1,3 +1,5 @@
+"use client";
+
 import { Song } from "@/types/types";
 import SongItem from "./SontItem";
 
