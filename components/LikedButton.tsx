@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import { useSessionContext } from "@supabase/auth-helpers-react";
@@ -5,16 +7,20 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import CustomToaster from "./CustomToaster";
+import { useRouter } from "next/navigation";
 
 type LikedButtonProps = {
   songId: string;
 };
 
 const LikedButton: React.FC<LikedButtonProps> = ({ songId }) => {
+  const router = useRouter();
+
   const { supabaseClient } = useSessionContext();
   const { user } = useUser();
   const [isSongLiked, setIsSongLiked] = useState<boolean>(false);
   const authModal = useAuthModal();
+
   const Icon = isSongLiked ? AiFillHeart : AiOutlineHeart;
 
   useEffect(() => {
@@ -49,7 +55,7 @@ const LikedButton: React.FC<LikedButtonProps> = ({ songId }) => {
       if (error) return toast.error("Error Dislkiking song");
 
       setIsSongLiked(false);
-      return toast.custom((t) => (
+      toast.custom((t) => (
         <CustomToaster
           image="/images/liked.png"
           title="Removed from your liked songs"
@@ -57,6 +63,8 @@ const LikedButton: React.FC<LikedButtonProps> = ({ songId }) => {
           remove={false}
         />
       ));
+      router.refresh();
+      return;
     }
 
     const { error } = await supabaseClient
@@ -74,6 +82,8 @@ const LikedButton: React.FC<LikedButtonProps> = ({ songId }) => {
         remove={false}
       />
     ));
+
+    router.refresh();
   };
 
   return (

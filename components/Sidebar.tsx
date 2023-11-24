@@ -36,7 +36,7 @@ const Sidebar: FC<SidebarProps> = ({ children, songs }) => {
   );
   return (
     <div className="flex h-screen md:p-2 gap-x-2">
-      <div className="hidden flex-col h-full w-[300px] md:flex gap-y-2  ">
+      <div className="hidden flex-col h-full w-[425px] md:flex gap-y-2  ">
         <Box>
           {routes.map((route) => (
             <SidebarItem key={route.label} {...route} />
