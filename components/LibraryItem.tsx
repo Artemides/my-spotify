@@ -2,12 +2,18 @@ import { defaultImage } from "@/constants/image";
 import { useLoadImage } from "@/hooks/useLoadImage";
 import { Song } from "@/types/types";
 import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
 type LibraryItemProps = {
   song: Song;
   onClick: (id: string) => void;
+  className?: string;
 };
-const LibraryItem: React.FC<LibraryItemProps> = ({ song, onClick }) => {
+const LibraryItem: React.FC<LibraryItemProps> = ({
+  song,
+  onClick,
+  className,
+}) => {
   const songImage = useLoadImage(song);
   const handleClick = () => {
     onClick && onClick(song.id);
@@ -15,7 +21,10 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ song, onClick }) => {
   return (
     <div
       onClick={handleClick}
-      className="w-full flex items-center gap-x-3 p-2 cursor-pointer hover:bg-neutral-800/50  rounded-md"
+      className={twMerge(
+        `w-full flex items-center gap-x-3 p-2 cursor-pointer hover:bg-neutral-800/50  rounded-md`,
+        className
+      )}
     >
       <div className="relative min-w-[48px] min-h-[48px] overflow-hidden rounded-md">
         <Image

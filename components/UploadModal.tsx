@@ -2,15 +2,15 @@ import { useUploadModal } from "@/hooks/useUploadModal";
 import Modal from "./Modal";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./Input";
-import { use, useState } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import toast from "react-hot-toast";
 import { useUser } from "@/hooks/useUser";
 import uniqid from "uniqid";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { supabase } from "@supabase/auth-ui-shared";
 import { useRouter } from "next/navigation";
-import UploadToaster from "./UploadToaster";
+import CustomToaster from "./CustomToaster";
+
 const UploadModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -84,11 +84,10 @@ const UploadModal = () => {
       router.refresh();
       reset();
       toast.custom((t) => (
-        <UploadToaster
+        <CustomToaster
           t={t}
           image={URL.createObjectURL(imageFile)}
           title={`Song ${title} Created!`}
-          path={title}
         />
       ));
       onClose();

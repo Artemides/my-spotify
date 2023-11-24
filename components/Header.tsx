@@ -14,10 +14,10 @@ import Button from "./Button";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import toast from "react-hot-toast";
-import SearchBar from "./Searhbar";
+import SearchBar from "./Searchbar";
 
 type HeaderProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   withSearch?: boolean;
 };
@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
         className
       )}
     >
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-x-2">
         <div className="hidden sm:flex gap-x-2 items-center">
           <button
             className="rounded-full bg-black/50 hover:bg-black/75 transition-all"
@@ -70,9 +70,8 @@ const Header: React.FC<HeaderProps> = ({
           >
             <RxCaretRight size={32} />
           </button>
+          {withSearch && <SearchBar />}
         </div>
-
-        {withSearch && <SearchBar />}
 
         <div className="sm:hidden flex gap-x-2 items-center">
           <button className="rounded-full bg-black/50 hover:bg-black/75 transition-all p-1">
