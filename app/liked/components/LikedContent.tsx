@@ -2,12 +2,16 @@
 
 import LibraryItem from "@/components/LibraryItem";
 import LikedButton from "@/components/LikedButton";
+import { useOnPlay } from "@/hooks/useOnPlay";
+import { usePlayer } from "@/hooks/usePlayer";
 import { Song } from "@/types/types";
 
 type LikedContentProps = {
   songs: Song[];
 };
 const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
+  const player = useOnPlay(songs);
+
   if (songs.length === 0) {
     return (
       <div
@@ -32,7 +36,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
         >
           <LibraryItem
             song={song}
-            onClick={() => {}}
+            onClick={player}
             className="hover:bg-transparent"
           />
           <LikedButton songId={song.id} />

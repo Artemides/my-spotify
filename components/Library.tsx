@@ -6,6 +6,7 @@ import { useUploadModal } from "@/hooks/useUploadModal";
 import { getSongsByUserId } from "@/actions/getSongsByUserId";
 import { Song } from "@/types/types";
 import LibraryItem from "./LibraryItem";
+import { useOnPlay } from "@/hooks/useOnPlay";
 
 type LibraryProps = {
   songs: Song[];
@@ -15,7 +16,7 @@ const Library = ({ songs }: LibraryProps) => {
   const authModal = useAuthModal();
   const { user } = useUser();
   const uploadModal = useUploadModal();
-
+  const onPlay = useOnPlay(songs);
   const handleAddPlaylist = () => {
     if (!user) return authModal.onOpen();
 
@@ -37,7 +38,7 @@ const Library = ({ songs }: LibraryProps) => {
       </div>
       <div className="h-full">
         {songs.map((song) => (
-          <LibraryItem key={song.id} song={song} onClick={() => {}} />
+          <LibraryItem key={song.id} song={song} onClick={onPlay} />
         ))}
       </div>
     </section>

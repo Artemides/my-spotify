@@ -15,22 +15,7 @@ export default async function Home() {
             <Playlist
               href="liked"
               image={"/images/liked.png"}
-              title="Sick Boy"
-            />
-            <Playlist
-              href="electro"
-              image={"/images/electro.jpeg"}
-              title="Sick Boy"
-            />
-            <Playlist
-              href="liked"
-              image={"/images/liked.png"}
-              title="Sick Boy"
-            />
-            <Playlist
-              href="electro"
-              image={"/images/electro.jpeg"}
-              title="Sick BoyssssssBoysssssssBoysssssssBoysssssssBoyssssssss"
+              title="Liked Songs"
             />
           </div>
         </div>

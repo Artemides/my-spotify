@@ -18,7 +18,7 @@ const SongItem = ({ song, onClick }: SongItemProps) => {
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
         <Image src={imageUrl || "/"} alt="" className="object-cover" fill />
         <div className="absolute bottom-0 right-0 -translate-x-[10px] -translate-y-[10px]">
-          <PlayButton />
+          <PlayButton onClick={() => onClick(song.id)} />
         </div>
       </div>
       <div className="w-full py-2">

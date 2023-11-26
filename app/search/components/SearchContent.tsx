@@ -2,6 +2,7 @@
 
 import LibraryItem from "@/components/LibraryItem";
 import LikedButton from "@/components/LikedButton";
+import { useOnPlay } from "@/hooks/useOnPlay";
 import { Song } from "@/types/types";
 import { useSearchParams } from "next/navigation";
 
@@ -10,6 +11,7 @@ type SearchContentProps = {
 };
 const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
   const searchParams = useSearchParams();
+  const player = useOnPlay(songs);
   const tilte = searchParams.get("title");
 
   if (songs.length === 0) {
@@ -28,7 +30,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
         >
           <LibraryItem
             song={song}
-            onClick={() => {}}
+            onClick={player}
             className="hover:bg-transparent"
           />
           <LikedButton songId={song.id} />
