@@ -40,7 +40,7 @@ const LikedButton: React.FC<LikedButtonProps> = ({ songId }) => {
     };
 
     fetchLikedSongs();
-  }, [user?.id, songId, supabaseClient]);
+  }, [user, songId, supabaseClient]);
 
   const handleLike = async () => {
     if (!user) return authModal.onOpen();

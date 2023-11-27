@@ -5,12 +5,16 @@ import qs from "query-string";
 
 import Input from "./Input";
 import { useDebounce } from "@/hooks/useDebounce";
+import { NavigateOptions } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type SearchBarProps = {};
+
+let options: NavigateOptions;
+
 const SearchBar: React.FC<SearchBarProps> = ({}) => {
   const [search, setSearch] = useState("");
   const rounter = useRouter();
-
+  options = {};
   const debauncedValue = useDebounce(search, 300);
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({}) => {
       url: "/search",
       query,
     });
-    rounter.push(url);
+    rounter.push(url, {});
   }, [debauncedValue, rounter]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
